@@ -3,7 +3,7 @@
 Verus Latest Release Downloader
 
 Downloads the latest release of Verus from GitHub releases.
-Supports both latest stable release and pre-release versions.
+Supports latest stable release, latest pre-release, or most recent release.
 """
 
 import requests
@@ -49,9 +49,14 @@ def get_platform_asset_pattern():
 
 
 def get_latest_release(include_prerelease=False):
-    """Fetch the latest release information from GitHub API."""
+    """Fetch the latest release information from GitHub API.
+    
+    Args:
+        include_prerelease: If True, fetch the latest pre-release version.
+                           If False, fetch the latest stable release.
+    """
     if include_prerelease:
-        # Get all releases and find the most recent one
+        # Get all releases and find the most recent pre-release
         url = "https://api.github.com/repos/verus-lang/verus/releases"
         response = requests.get(url)
         response.raise_for_status()
@@ -60,8 +65,11 @@ def get_latest_release(include_prerelease=False):
         if not releases:
             raise Exception("No releases found")
         
-        # Return the first (most recent) release
-        return releases[0]
+        # Find the most recent pre-release
+        for release in releases:
+            if release['prerelease']:
+                return release
+        raise Exception("No pre-release versions found")
     else:
         # Get the latest stable release
         url = "https://api.github.com/repos/verus-lang/verus/releases/latest"
@@ -362,8 +370,9 @@ def progress_bar(downloaded, total):
 
 def main():
     parser = argparse.ArgumentParser(description='Download and install the latest Verus release')
-    parser.add_argument('--pre-release', action='store_true', 
-                       help='Include pre-release versions')
+    
+    parser.add_argument('--pre-release', '--prerelease', action='store_true', 
+                       help='Download the latest pre-release version instead of stable')
     parser.add_argument('--output-dir', '-o', default='.', 
                        help='Download directory (default: current directory)')
     parser.add_argument('--install-dir', '-i',
@@ -380,7 +389,12 @@ def main():
     args = parser.parse_args()
     
     try:
-        print("Fetching latest Verus release information...")
+        # Determine release type based on arguments
+        if args.pre_release:
+            print("Fetching latest Verus pre-release...")
+        else:
+            print("Fetching latest stable Verus release...")
+            
         release = get_latest_release(include_prerelease=args.pre_release)
         
         print(f"Found release: {release['tag_name']}")

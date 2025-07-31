@@ -14,27 +14,29 @@ A Python script that automatically downloads and installs the latest Verus relea
 ## Quick Start
 
 ```bash
-# Download and install the latest Verus release
+# Download and install the latest stable Verus release (default)
 python3 verus_installer_from_release.py
 
 # List available releases without installing
 python3 verus_installer_from_release.py --list-assets
 
-# Include pre-release versions
+# Install the latest pre-release version
 python3 verus_installer_from_release.py --pre-release
 ```
 
 ## Options
 
 ```
---pre-release          Include pre-release versions
---output-dir, -o       Download directory (default: current directory)
---install-dir, -i      Installation directory (default: ~/verus)
---platform            Platform pattern to search for (e.g., x86-linux)
---list-assets         List all available assets without downloading
---no-extract          Download only, do not extract or install
---no-path             Do not modify PATH configuration
+--pre-release, --prerelease    Download the latest pre-release version instead of stable
+--output-dir, -o              Download directory (default: current directory)
+--install-dir, -i             Installation directory (default: ~/verus)
+--platform                    Platform pattern to search for (e.g., x86-linux)
+--list-assets                 List all available assets without downloading
+--no-extract                  Download only, do not extract or install
+--no-path                     Do not modify PATH configuration
 ```
+
+By default, the script downloads the latest stable release. Use `--pre-release` to get the latest pre-release version instead.
 
 ## Requirements
 
@@ -67,9 +69,25 @@ Or run directly:
 
 ## Example Output
 
+**Stable Release (Default):**
 ```
+Fetching latest stable Verus release...
 Found release: release/0.2025.07.24.142e202
+Published: 2025-07-28T01:38:46Z
+Pre-release: False
 Downloading verus-0.2025.07.24.142e202-x86-linux.zip (28.3 MB)...
+✓ Download completed
+✓ Verus installed to: /home/user/verus
+✓ Installation verified successfully!
+```
+
+**Pre-release:**
+```
+Fetching latest Verus pre-release...
+Found release: release/rolling/0.2025.07.30.2496084
+Published: 2025-07-30T22:41:43Z
+Pre-release: True
+Downloading verus-0.2025.07.30.2496084-x86-linux.zip (28.3 MB)...
 ✓ Download completed
 ✓ Verus installed to: /home/user/verus
 ✓ Installation verified successfully!
