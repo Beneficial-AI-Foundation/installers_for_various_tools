@@ -4,6 +4,9 @@ A collection of Python scripts for downloading and installing development tools 
 
 ## 📦 Scripts Included
 
+### 0. Verus installer (`verus_installer_from_release.py`)
+Downloads the latest stable or pre-release versions of Verus.
+
 ### 1. Rust Analyzer Installer (`rust_analyzer_installer.py`)
 Downloads and installs the latest Rust Analyzer from GitHub releases.
 
@@ -27,6 +30,20 @@ Copies a project, runs analyzer SCIP analysis, and exports to JSON format.
 - 🔄 Generates SCIP indices for code analysis
 
 ## 🚀 Quick Start
+
+
+### Install Verus 
+```bash
+# Download and install the latest Verus release
+python3 verus_installer_from_release.py
+
+# List available releases without installing
+python3 verus_installer_from_release.py --list-assets
+
+# Include pre-release versions
+python3 verus_installer_from_release.py --pre-release
+```
+
 
 ### Install Verus Analyzer
 ```bash
