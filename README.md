@@ -95,6 +95,17 @@ python3 generate_scip_index.py /path/to/project --keep-copy --output-dir ./analy
 
 ## 🔧 Command Line Options
 
+### Verus Installer
+```
+--pre-release          Include pre-release versions
+--output-dir, -o       Download directory (default: current directory)
+--install-dir, -i      Installation directory (default: ~/verus)
+--platform            Platform pattern to search for (e.g., x86-linux)
+--list-assets         List all available assets without downloading
+--no-extract          Download only, do not extract or install
+--no-path             Do not modify PATH configuration
+```
+
 ### Verus Analyzer Installer
 ```
 --pre-release, --prerelease    Download pre-release version instead of stable
