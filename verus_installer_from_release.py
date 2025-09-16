@@ -78,6 +78,60 @@ def get_latest_release(include_prerelease=False):
         return response.json()
 
 
+def get_specific_release(version):
+    """Fetch a specific release by version from GitHub API.
+    
+    Args:
+        version: The version string to search for (e.g., "0.2025.08.25.63ab0cb")
+    """
+    url = "https://api.github.com/repos/verus-lang/verus/releases"
+    response = requests.get(url)
+    response.raise_for_status()
+    releases = response.json()
+    
+    if not releases:
+        raise Exception("No releases found")
+    
+    # Search for releases that contain the version string
+    matching_releases = []
+    for release in releases:
+        tag_name = release['tag_name']
+        release_name = release.get('name', '')
+        
+        # Check if version appears in tag name or release name
+        if (version in tag_name or 
+            version in release_name or 
+            tag_name.endswith(version) or
+            release_name.endswith(version)):
+            matching_releases.append(release)
+    
+    if not matching_releases:
+        # Show available versions to help the user
+        print(f"Version '{version}' not found. Available versions:")
+        for release in releases[:10]:  # Show first 10 releases
+            print(f"  - {release['tag_name']} ({release.get('name', 'No name')})")
+        if len(releases) > 10:
+            print(f"  ... and {len(releases) - 10} more releases")
+        raise Exception(f"No release found matching version: {version}")
+    
+    if len(matching_releases) > 1:
+        print(f"Multiple releases found matching '{version}':")
+        for i, release in enumerate(matching_releases):
+            print(f"  {i}: {release['tag_name']} - {release.get('name', 'No name')}")
+        
+        choice = input("Enter the number of the release to download: ")
+        try:
+            selected_index = int(choice)
+            if 0 <= selected_index < len(matching_releases):
+                return matching_releases[selected_index]
+            else:
+                raise ValueError("Invalid selection")
+        except (ValueError, IndexError):
+            raise Exception("Invalid choice. Please run the command again and select a valid option.")
+    
+    return matching_releases[0]
+
+
 def find_asset_for_platform(assets, platform_pattern):
     """Find the appropriate asset for the current platform."""
     if not platform_pattern:
@@ -371,6 +425,8 @@ def progress_bar(downloaded, total):
 def main():
     parser = argparse.ArgumentParser(description='Download and install the latest Verus release')
     
+    parser.add_argument('--version', '-v',
+                       help='Download a specific version (e.g., "0.2025.08.25.63ab0cb")')
     parser.add_argument('--pre-release', '--prerelease', action='store_true', 
                        help='Download the latest pre-release version instead of stable')
     parser.add_argument('--output-dir', '-o', default='.', 
@@ -389,13 +445,21 @@ def main():
     args = parser.parse_args()
     
     try:
-        # Determine release type based on arguments
-        if args.pre_release:
+        # Validate arguments
+        if args.version and args.pre_release:
+            print("Error: Cannot specify both --version and --pre-release")
+            sys.exit(1)
+        
+        # Determine release type and fetch release information
+        if args.version:
+            print(f"Fetching Verus release version: {args.version}...")
+            release = get_specific_release(args.version)
+        elif args.pre_release:
             print("Fetching latest Verus pre-release...")
+            release = get_latest_release(include_prerelease=True)
         else:
             print("Fetching latest stable Verus release...")
-            
-        release = get_latest_release(include_prerelease=args.pre_release)
+            release = get_latest_release(include_prerelease=False)
         
         print(f"Found release: {release['tag_name']}")
         print(f"Published: {release['published_at']}")

@@ -37,6 +37,9 @@ Copies a project, runs analyzer SCIP analysis, and exports to JSON format.
 # Download and install the latest Verus release
 python3 verus_installer_from_release.py
 
+# Install a specific version
+python3 verus_installer_from_release.py --version "0.2025.08.25.63ab0cb"
+
 # List available releases without installing
 python3 verus_installer_from_release.py --list-assets
 
@@ -97,13 +100,14 @@ python3 generate_scip_index.py /path/to/project --keep-copy --output-dir ./analy
 
 ### Verus Installer
 ```
---pre-release          Include pre-release versions
---output-dir, -o       Download directory (default: current directory)
---install-dir, -i      Installation directory (default: ~/verus)
---platform            Platform pattern to search for (e.g., x86-linux)
---list-assets         List all available assets without downloading
---no-extract          Download only, do not extract or install
---no-path             Do not modify PATH configuration
+--version, -v             Download a specific version (e.g., "0.2025.08.25.63ab0cb")
+--pre-release             Include pre-release versions
+--output-dir, -o          Download directory (default: current directory)
+--install-dir, -i         Installation directory (default: ~/verus)
+--platform               Platform pattern to search for (e.g., x86-linux)
+--list-assets            List all available assets without downloading
+--no-extract             Download only, do not extract or install
+--no-path                Do not modify PATH configuration
 ```
 
 ### Verus Analyzer Installer
