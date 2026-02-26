@@ -1,23 +1,18 @@
 # Verus & SCIP Downloader Toolkit
 
-A collection of Python scripts for downloading and installing development tools from GitHub releases.
+A collection of scripts for downloading and installing development tools from GitHub releases. Available in both Python (`.py`) and shell script (`.sh`) versions.
 
 ## 📦 Scripts Included
 
-### 0. Verus installer (`verus_installer_from_release.py`)
-Downloads the latest stable or pre-release versions of Verus.
+| Tool | Python | Shell |
+|------|--------|-------|
+| Verus installer | `verus_installer_from_release.py` | `verus_installer_from_release.sh` |
+| Rust Analyzer installer | `rust_analyzer_installer.py` | `rust_analyzer_installer.sh` |
+| Verus Analyzer installer | `verus_analyzer_installer.py` | `verus_analyzer_installer.sh` |
+| SCIP installer | `scip_installer.py` | `scip_installer.sh` |
+| SCIP Index Generator | `generate_scip_index.py` | `generate_scip_index.sh` |
 
-### 1. Rust Analyzer Installer (`rust_analyzer_installer.py`)
-Downloads and installs the latest Rust Analyzer from GitHub releases.
-
-### 2. Verus Analyzer Installer (`verus_analyzer_installer.py`)
-Downloads and installs the latest Verus Analyzer from GitHub releases.
-
-### 3. SCIP Installer (`scip_installer.py`)
-Downloads and installs the latest SCIP (Source Code Intelligence Protocol) tool from GitHub releases.
-
-### 4. SCIP Index Generator (`generate_scip_index.py`)
-Copies a project, runs analyzer SCIP analysis, and exports to JSON format.
+Shell scripts require `curl` and `jq`. Both versions support the same command-line options.
 
 ## ✨ Features
 
@@ -158,7 +153,38 @@ project                       Path to the project to analyze (required)
 ## 📋 Requirements
 
 - Python 3.6+
-- `requests` library (`pip install requests`)
+- `requests` library
+
+### Installing uv (Recommended)
+
+[uv](https://github.com/astral-sh/uv) is a fast Python package manager that automatically manages dependencies in isolated local environments, keeping your global Python installation clean.
+
+**Install uv:**
+
+```bash
+# On Linux/macOS
+curl -LsSf https://astral.sh/uv/install.sh | sh
+
+# On Windows
+powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"
+```
+
+**Run scripts with uv:**
+
+```bash
+# uv automatically installs dependencies (like requests) 
+# in a temporary cached environment without polluting
+# your local or global Python environment
+uv run verus_installer_from_release.py
+uv run rust_analyzer_installer.py
+```
+
+**Alternative (traditional pip):**
+
+If you prefer not to use uv, install dependencies globally:
+```bash
+pip install requests
+```
 
 ## 🖥️ Supported Platforms
 

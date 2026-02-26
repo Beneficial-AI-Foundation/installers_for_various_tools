@@ -1,4 +1,7 @@
 #!/usr/bin/env python3
+# /// script
+# dependencies = ["requests"]
+# ///
 """
 SCIP (Source Code Intelligence Protocol) Latest Release Downloader
 
