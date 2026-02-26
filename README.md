@@ -1,4 +1,5 @@
-# Verus & SCIP Downloader Toolkit
+# Verus & SCIP Downloader Toolkit (DEPRECATED)
+> **Deprecated:** This repository has been merged with [probe-verus/tools](https://github.com/Beneficial-AI-Foundation/probe-verus/tree/main/tools) and is no longer maintained.
 
 A collection of scripts for downloading and installing development tools from GitHub releases. Available in both Python (`.py`) and shell script (`.sh`) versions.
 
